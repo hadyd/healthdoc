@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontFamily: fonts.primary[400],
-    colors: colors.text.primary,
+    color: colors.text.primary,
   },
   address: {
     fontSize: 12,
