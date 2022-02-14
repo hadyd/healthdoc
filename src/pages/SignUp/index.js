@@ -2,9 +2,8 @@ import React, {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {Button, Gap, Header, Input, Loading} from '../../components';
 import {colors, handleErrorMessage, useForm} from '../../utils';
-import {createUserWithEmailAndPassword} from 'firebase/auth';
 import {showMessage} from 'react-native-flash-message';
-import {auth} from '../../config';
+import {Fire} from '../../config';
 
 const SignUp = ({navigation}) => {
   const [form, setForm] = useForm({
@@ -18,7 +17,8 @@ const SignUp = ({navigation}) => {
 
   const onContinue = () => {
     setLoading(true);
-    createUserWithEmailAndPassword(auth, form.email, form.password)
+    Fire.auth()
+      .createUserWithEmailAndPassword(form.email, form.password)
       .then(success => {
         console.log(success, 'success');
         setLoading(false);
