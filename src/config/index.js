@@ -1,3 +1,1 @@
-import Fire from './Fire';
-
-export {Fire};
+export * from './Fire';
