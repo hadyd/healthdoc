@@ -19,10 +19,17 @@ const SignUp = ({navigation}) => {
     setLoading(true);
     Fire.auth()
       .createUserWithEmailAndPassword(form.email, form.password)
-      .then(success => {
-        console.log(success, 'success');
+      .then(response => {
         setLoading(false);
         setForm('reset');
+        const data = {
+          fullName: form.fullName,
+          profession: form.profession,
+          email: form.email,
+        };
+        Fire.database()
+          .ref('users/' + response.user.uid + '/')
+          .set(data);
       })
       .catch(error => {
         const errorMessage = handleErrorMessage(error.code);
