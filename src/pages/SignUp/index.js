@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {Button, Gap, Header, Input, Loading} from '../../components';
-import {colors, handleErrorMessage, useForm} from '../../utils';
+import {colors, handleErrorMessage, storeData, useForm} from '../../utils';
 import {showMessage} from 'react-native-flash-message';
 import {Fire} from '../../config';
 
@@ -30,6 +30,9 @@ const SignUp = ({navigation}) => {
         Fire.database()
           .ref('users/' + response.user.uid + '/')
           .set(data);
+
+        storeData('user', data);
+        navigation.navigate('UploadPhoto');
       })
       .catch(error => {
         const errorMessage = handleErrorMessage(error.code);
