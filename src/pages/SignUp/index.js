@@ -26,16 +26,17 @@ const SignUp = ({navigation}) => {
           fullName: form.fullName,
           profession: form.profession,
           email: form.email,
+          uid: response.user.uid,
         };
         Fire.database()
           .ref('users/' + response.user.uid + '/')
           .set(data);
 
         storeData('user', data);
-        navigation.navigate('UploadPhoto');
+        navigation.navigate('UploadPhoto', data);
       })
       .catch(error => {
-        const errorMessage = handleErrorMessage(error.code);
+        const errorMessage = handleErrorMessage(error);
         setLoading(false);
         showMessage({
           message: errorMessage,
