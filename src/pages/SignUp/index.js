@@ -1,9 +1,15 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {Button, Gap, Header, Input, Loading} from '../../components';
-import {colors, handleErrorMessage, storeData, useForm} from '../../utils';
-import {showMessage} from 'react-native-flash-message';
+import {Button, Gap, Header, Input} from '../../components';
+import {
+  colors,
+  handleErrorMessage,
+  showError,
+  storeData,
+  useForm,
+} from '../../utils';
 import {Fire} from '../../config';
+import {useDispatch} from 'react-redux';
 
 const SignUp = ({navigation}) => {
   const [form, setForm] = useForm({
@@ -13,14 +19,14 @@ const SignUp = ({navigation}) => {
     password: '',
   });
 
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const onContinue = () => {
-    setLoading(true);
+    dispatch({type: 'SET_LOADING', value: true});
     Fire.auth()
       .createUserWithEmailAndPassword(form.email, form.password)
       .then(response => {
-        setLoading(false);
+        dispatch({type: 'SET_LOADING', value: false});
         setForm('reset');
         const data = {
           fullName: form.fullName,
@@ -37,13 +43,8 @@ const SignUp = ({navigation}) => {
       })
       .catch(error => {
         const errorMessage = handleErrorMessage(error);
-        setLoading(false);
-        showMessage({
-          message: errorMessage,
-          type: 'default',
-          backgroundColor: colors.error,
-          color: colors.white,
-        });
+        dispatch({type: 'SET_LOADING', value: false});
+        showError(errorMessage);
       });
   };
 
@@ -82,7 +83,6 @@ const SignUp = ({navigation}) => {
           </ScrollView>
         </View>
       </View>
-      {loading && <Loading />}
     </>
   );
 };

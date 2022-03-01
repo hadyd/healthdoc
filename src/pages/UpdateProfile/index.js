@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {Button, Gap, Header, Input, Profile} from '../../components';
-import {colors, getData, storeData} from '../../utils';
+import {colors, getData, showError, storeData} from '../../utils';
 import {Fire} from '../../config';
-import {showMessage} from 'react-native-flash-message';
 import ImagePicker from 'react-native-image-picker';
 import {ILUserNullPhoto} from '../../assets';
 
@@ -29,12 +28,7 @@ const UpdateProfile = ({navigation}) => {
   const update = () => {
     if (password.length > 0) {
       if (password.length < 6) {
-        showMessage({
-          message: 'Password kurang dari 6 karakter',
-          type: 'default',
-          backgroundColor: colors.error,
-          color: colors.white,
-        });
+        showError('Password kurang dari 6 karakter');
       } else {
         updatePassword();
         updateProfileData();
@@ -56,12 +50,7 @@ const UpdateProfile = ({navigation}) => {
         storeData('user', data);
       })
       .catch(err => {
-        showMessage({
-          message: err.message,
-          type: 'default',
-          backgroundColor: colors.error,
-          color: colors.white,
-        });
+        showError(err.message);
       });
   };
 
@@ -69,12 +58,7 @@ const UpdateProfile = ({navigation}) => {
     Fire.auth().onAuthStateChanged(user => {
       if (user) {
         user.updatePassword(password).catch(err => {
-          showMessage({
-            message: err.message,
-            type: 'default',
-            backgroundColor: colors.error,
-            color: colors.white,
-          });
+          showError(err.message);
         });
       }
     });
@@ -92,12 +76,7 @@ const UpdateProfile = ({navigation}) => {
       {quality: 0.5, maxWidth: 200, maxHeight: 200},
       response => {
         if (response.didCancel || response.error) {
-          showMessage({
-            message: 'Oops, sepertinya anda tidak memilih fotonya?',
-            type: 'default',
-            backgroundColor: colors.error,
-            color: colors.white,
-          });
+          showError('Oops, sepertinya anda tidak memilih fotonya?');
         } else {
           const source = {uri: response.uri};
           setPhotoForDB(`data:${response.type};base64, ${response.data}`);
