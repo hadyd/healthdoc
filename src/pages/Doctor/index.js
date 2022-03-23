@@ -8,16 +8,12 @@ import {
   RatedDoctor,
 } from '../../components/molecules';
 import {colors, fonts, showError} from '../../utils';
-import {
-  DummyDoctor1,
-  DummyDoctor2,
-  DummyDoctor3,
-  JSONDoctorCategory,
-} from '../../assets';
+import {DummyDoctor1, DummyDoctor2, DummyDoctor3} from '../../assets';
 import {Fire} from '../../config';
 
 const Doctor = ({navigation}) => {
   const [news, setNews] = useState([]);
+  const [categoryDoctor, setCategoryDoctor] = useState([]);
   useEffect(() => {
     Fire.database()
       .ref('news/')
@@ -25,6 +21,18 @@ const Doctor = ({navigation}) => {
       .then(res => {
         if (res.val()) {
           setNews(res.val());
+        }
+      })
+      .catch(err => {
+        showError(err.message);
+      });
+
+    Fire.database()
+      .ref('category_doctor/')
+      .once('value')
+      .then(res => {
+        if (res.val()) {
+          setCategoryDoctor(res.val());
         }
       })
       .catch(err => {
@@ -46,7 +54,7 @@ const Doctor = ({navigation}) => {
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View style={styles.category}>
                 <Gap width={32} />
-                {JSONDoctorCategory.data.map(item => {
+                {categoryDoctor.map(item => {
                   return (
                     <DoctorCategory
                       key={item.id}
