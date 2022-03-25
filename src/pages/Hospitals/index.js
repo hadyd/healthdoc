@@ -13,8 +13,9 @@ const Hospitals = () => {
       .once('value')
       .then(res => {
         if (res.val()) {
-          const data = res.val().filter(val => val !== undefined);
-          setHospitals(data);
+          const data = res.val();
+          const filterData = data.filter(el => el !== null);
+          setHospitals(filterData);
         }
       })
       .catch(err => {
