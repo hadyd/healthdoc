@@ -8,7 +8,7 @@ const InputChat = ({value, onChangeText, onButtonPress}) => {
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="Tulis pesan untuk Nairobi"
+        placeholder="Tulis pesan"
         value={value}
         onChangeText={onChangeText}
       />
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 16,
     flexDirection: 'row',
-    backgroundColor: colors.white
+    backgroundColor: colors.white,
   },
   input: {
     backgroundColor: colors.disable,
