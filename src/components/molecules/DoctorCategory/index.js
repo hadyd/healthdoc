@@ -1,6 +1,12 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {ILCatObat, ILCatPsikiater, ILCatUmum} from '../../../assets';
+import {
+  ILCatObat,
+  ILCatPsikiater,
+  ILCatUmum,
+  ILCatGigi,
+  ILCatAnak,
+} from '../../../assets';
 import {fonts, colors} from '../../../utils';
 
 const DoctorCategory = ({category, onPress}) => {
@@ -13,6 +19,12 @@ const DoctorCategory = ({category, onPress}) => {
     }
     if (category === 'dokter obat') {
       return <ILCatObat style={styles.illustration} />;
+    }
+    if (category === 'dokter gigi') {
+      return <ILCatGigi style={styles.illustration} />;
+    }
+    if (category === 'dokter anak') {
+      return <ILCatAnak style={styles.illustration} />;
     }
     return <ILCatUmum style={styles.illustration} />;
   };
@@ -39,7 +51,9 @@ const styles = StyleSheet.create({
     height: 130,
   },
   illustration: {
-    marginBottom: 28,
+    marginBottom: 16,
+    marginTop: 4,
+    alignSelf: 'center',
   },
   label: {
     fontSize: 12,
