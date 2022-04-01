@@ -49,6 +49,7 @@ const ChooseDoctor = ({navigation, route}) => {
             name={doctor.data.fullName}
             desc={doctor.data.gender}
             onPress={() => navigation.navigate('DoctorProfile', doctor)}
+            isCapitalize
           />
         );
       })}

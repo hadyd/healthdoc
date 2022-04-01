@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.primary[400],
     color: colors.text.secondary,
     marginTop: 2,
+    textTransform: 'capitalize',
   },
   profile: {
     flex: 1,

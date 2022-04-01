@@ -6,10 +6,11 @@ import {
   IconLanguage,
   IconNext,
   IconRate,
+  IconSignOut,
 } from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
-const List = ({profile, name, desc, type, onPress, icon}) => {
+const List = ({profile, name, desc, type, onPress, icon, isCapitalize}) => {
   const Icon = () => {
     if (icon === 'edit-profile') {
       return <IconEditProfile />;
@@ -23,6 +24,9 @@ const List = ({profile, name, desc, type, onPress, icon}) => {
     if (icon === 'help') {
       return <IconHelp />;
     }
+    if (icon === 'signout') {
+      return <IconSignOut />;
+    }
     return <IconEditProfile />;
   };
   return (
@@ -30,9 +34,9 @@ const List = ({profile, name, desc, type, onPress, icon}) => {
       {icon ? <Icon /> : <Image source={profile} style={styles.avatar} />}
       <View style={styles.content}>
         <Text style={styles.name}>{name}</Text>
-        <Text style={styles.desc}>{desc}</Text>
+        {desc && <Text style={styles.desc(isCapitalize)}>{desc}</Text>}
       </View>
-      {type == 'next' && <IconNext />}
+      {type === 'next' && <IconNext />}
     </TouchableOpacity>
   );
 };
@@ -62,10 +66,10 @@ const styles = StyleSheet.create({
     fontFamily: fonts.primary[400],
     color: colors.text.primary,
   },
-  desc: {
+  desc: isCapitalize => ({
     fontSize: 12,
     fontFamily: fonts.primary[300],
     color: colors.text.secondary,
-    textTransform: 'capitalize',
-  },
+    textTransform: isCapitalize ? 'capitalize' : 'none',
+  }),
 });

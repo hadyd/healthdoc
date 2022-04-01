@@ -31,7 +31,7 @@ const Messages = ({navigation}) => {
         setHistoryChat(data);
       }
     });
-  }, [user.id]);
+  }, [user.uid]);
 
   const getDataUserFromLocal = () => {
     getData('user').then(res => {
