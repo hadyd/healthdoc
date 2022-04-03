@@ -120,5 +120,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.primary[400],
     textAlign: 'center',
     color: colors.text.secondary,
+    textTransform: 'capitalize',
   },
 });

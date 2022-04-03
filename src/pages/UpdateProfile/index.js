@@ -11,17 +11,19 @@ const UpdateProfile = ({navigation}) => {
     fullName: '',
     profession: '',
     email: '',
+    photoForDB: '',
   });
   const [password, setPassword] = useState('');
   const [photo, setPhoto] = useState(ILUserNullPhoto);
-  const [photoForDB, setPhotoForDB] = useState('');
 
   useEffect(() => {
     getData('user').then(res => {
       const data = res;
-      setPhoto({uri: res.photo});
+      data.photoForDB = res?.photo?.length > 1 ? res.photo : ILUserNullPhoto;
+      const tempPhoto =
+        res?.photo?.length > 1 ? {uri: res.photo} : ILUserNullPhoto;
+      setPhoto(tempPhoto);
       setProfile(data);
-      setPhotoForDB(res.photo);
     });
   }, []);
 
@@ -42,12 +44,19 @@ const UpdateProfile = ({navigation}) => {
 
   const updateProfileData = () => {
     const data = profile;
-    data.photo = photoForDB;
+    data.photo = profile.photoForDB;
+    delete data.photoForDB;
     Fire.database()
       .ref(`users/${profile.uid}/`)
       .update(data)
       .then(() => {
-        storeData('user', data);
+        storeData('user', data)
+          .then(() => {
+            navigation.replace('MainApp');
+          })
+          .catch(() => {
+            showError('Terjadi Masalah');
+          });
       })
       .catch(err => {
         showError(err.message);
@@ -76,16 +85,18 @@ const UpdateProfile = ({navigation}) => {
       {quality: 0.5, maxWidth: 200, maxHeight: 200},
       response => {
         if (response.didCancel || response.error) {
-          showError('Oops, sepertinya anda tidak memilih fotonya?');
+          showError('oops, sepertinya anda tidak memilih foto nya?');
         } else {
           const source = {uri: response.uri};
-          setPhotoForDB(`data:${response.type};base64, ${response.data}`);
+          setProfile({
+            ...profile,
+            photoForDB: `data:${response.type};base64, ${response.data}`,
+          });
           setPhoto(source);
         }
       },
     );
   };
-
   return (
     <View style={styles.page}>
       <Header title="Edit Profile" onPress={() => navigation.goBack()} />

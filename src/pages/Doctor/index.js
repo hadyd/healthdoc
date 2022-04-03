@@ -7,19 +7,28 @@ import {
   NewsItem,
   RatedDoctor,
 } from '../../components/molecules';
-import {colors, fonts, showError} from '../../utils';
+import {colors, fonts, getData, showError} from '../../utils';
 import {Fire} from '../../config';
+import {ILUserNullPhoto} from '../../assets';
 
 const Doctor = ({navigation}) => {
   const [news, setNews] = useState([]);
   const [categoryDoctor, setCategoryDoctor] = useState([]);
   const [doctors, setDoctors] = useState([]);
+  const [profile, setProfile] = useState({
+    photo: ILUserNullPhoto,
+    fullName: '',
+    profession: '',
+  });
 
   useEffect(() => {
     getCategoryDoctor();
     getTopRatedDoctors();
     getNews();
-  }, []);
+    navigation.addListener('focus', () => {
+      getUserData();
+    });
+  }, [navigation]);
 
   const getCategoryDoctor = () => {
     Fire.database()
@@ -77,13 +86,24 @@ const Doctor = ({navigation}) => {
       });
   };
 
+  const getUserData = () => {
+    getData('user').then(res => {
+      const data = res;
+      data.photo = res?.photo?.length > 1 ? {uri: res.photo} : ILUserNullPhoto;
+      setProfile(res);
+    });
+  };
+
   return (
     <View style={styles.page}>
       <View style={styles.content}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.wrapperSection}>
             <Gap height={30} />
-            <HomeProfile onPress={() => navigation.navigate('UserProfile')} />
+            <HomeProfile
+              profile={profile}
+              onPress={() => navigation.navigate('UserProfile', profile)}
+            />
             <Text style={styles.welcome}>
               Mau konsultasi dengan siapa hari ini?
             </Text>

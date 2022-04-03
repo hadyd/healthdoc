@@ -1,24 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {ILUserNullPhoto} from '../../assets';
 import {Gap, Header, List, Profile} from '../../components';
-import {colors, getData, showError} from '../../utils';
+import {colors, showError} from '../../utils';
 import {Fire} from '../../config';
 
-const UserProfile = ({navigation}) => {
-  const [profile, setProfile] = useState({
-    fullName: '',
-    profession: '',
-    photo: ILUserNullPhoto,
-  });
-
-  useEffect(() => {
-    getData('user').then(res => {
-      const data = res;
-      data.photo = {uri: res.photo};
-      setProfile(res);
-    });
-  }, []);
+const UserProfile = ({navigation, route}) => {
+  const profile = route.params;
 
   const signOut = () => {
     Fire.auth()

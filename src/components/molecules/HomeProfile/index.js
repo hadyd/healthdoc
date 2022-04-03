@@ -1,23 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {ILUserNullPhoto} from '../../../assets';
-import {colors, fonts, getData} from '../../../utils';
+import {colors, fonts} from '../../../utils';
 
-const HomeProfile = ({onPress}) => {
-  const [profile, setProfile] = useState({
-    photo: ILUserNullPhoto,
-    fullName: '',
-    profession: '',
-  });
-
-  useEffect(() => {
-    getData('user').then(res => {
-      const data = res;
-      data.photo = {uri: res.photo};
-      setProfile(res);
-    });
-  }, []);
-
+const HomeProfile = ({onPress, profile}) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <Image source={profile.photo} style={styles.avatar} />
