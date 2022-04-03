@@ -85,7 +85,7 @@ const UpdateProfile = ({navigation}) => {
       {quality: 0.5, maxWidth: 200, maxHeight: 200, includeBase64: true},
       response => {
         if (response.didCancel || response.error) {
-          showError('oops, sepertinya anda tidak memilih foto nya?');
+          showError('oops, sepertinya anda tidak memilih fotonya?');
         } else {
           const source = {uri: response.uri};
           setProfile({
